@@ -79,7 +79,7 @@ public class MultiServer {
                 while (!exit){
                     try {
                         String message = receive(client);
-
+                        System.out.println("Got from user: " + message);
                         if(message.startsWith("gettime")){
                             send(client, LocalDateTime.now().toString());
                         }else {
@@ -105,6 +105,8 @@ public class MultiServer {
         int rec = socket.getInputStream().read(buffer);
         String msg = new String(buffer, 0, rec, StandardCharsets.US_ASCII);
 
+        System.out.println("got from client msg with size" + msg);
+
         socket.getOutputStream().write(OK);
 
         buffer = new byte[Integer.parseInt(msg)];
@@ -119,10 +121,11 @@ public class MultiServer {
         socket.getOutputStream().write(String.valueOf(buffer.length).getBytes(StandardCharsets.US_ASCII));
 
         byte[] ackBuffer = new byte[4];
-        int rec = socket.getInputStream().read(buffer);
+        int rec = socket.getInputStream().read(ackBuffer);
         if(Arrays.equals(ackBuffer, OK)){
             socket.getOutputStream().write(buffer);
         }
-        throw new IllegalReceiveException("Protocol violation!");
+        else
+            throw new IllegalReceiveException("Protocol violation!");
     }
 }

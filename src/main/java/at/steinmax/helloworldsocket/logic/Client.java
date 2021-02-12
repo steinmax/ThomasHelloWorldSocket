@@ -28,6 +28,17 @@ public class Client {
         }
     }
 
+    public boolean disconnect(){
+        try {
+            serverConnection.close();
+            serverConnection = null;
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private String receive() throws IOException {
         byte[] buffer = new byte[10];
         int rec = serverConnection.getInputStream().read(buffer);
@@ -47,11 +58,12 @@ public class Client {
         serverConnection.getOutputStream().write(String.valueOf(buffer.length).getBytes(StandardCharsets.US_ASCII));
 
         byte[] ackBuffer = new byte[4];
-        int rec = serverConnection.getInputStream().read(buffer);
+        int rec = serverConnection.getInputStream().read(ackBuffer);
         if(Arrays.equals(ackBuffer, OK)){
             serverConnection.getOutputStream().write(buffer);
         }
-        throw new IllegalReceiveException("Protocol violation!");
+        else
+            throw new IllegalReceiveException("Protocol violation!");
     }
 
     public String getResponse(String message) {
