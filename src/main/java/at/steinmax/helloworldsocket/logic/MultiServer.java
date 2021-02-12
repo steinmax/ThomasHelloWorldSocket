@@ -87,7 +87,7 @@ public class MultiServer {
                         }
 
                     }catch (Exception exception){
-                        exit = false;
+                        exit = true;
                         clients.remove(client);
                         try {
                             client.close();
