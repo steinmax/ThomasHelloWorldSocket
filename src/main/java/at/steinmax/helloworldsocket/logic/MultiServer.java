@@ -18,7 +18,7 @@ public class MultiServer {
     final List<Socket> clients = new LinkedList<>();
     Thread acceptThread;
     volatile boolean isAccepting = false;
-    byte[] OK = {(byte) 255, (byte) 255, (byte) 255, (byte) 255};
+    final byte[] OK = {(byte) 255, (byte) 255, (byte) 255, (byte) 255};
 
     public MultiServer(int port){
         this.port = port;
