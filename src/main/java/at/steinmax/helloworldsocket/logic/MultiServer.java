@@ -78,7 +78,7 @@ public class MultiServer {
 
                 while (!exit){
                     try {
-                        String message = recieve(client);
+                        String message = receive(client);
 
                         if(message.startsWith("gettime")){
                             send(client, LocalDateTime.now().toString());
@@ -100,7 +100,7 @@ public class MultiServer {
         });
     }
 
-    private String recieve(Socket socket) throws IOException {
+    private String receive(Socket socket) throws IOException {
         byte[] buffer = new byte[10];
         int rec = socket.getInputStream().read(buffer);
         String msg = new String(buffer, 0, rec, StandardCharsets.US_ASCII);
